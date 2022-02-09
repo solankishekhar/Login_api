@@ -31,6 +31,7 @@ router.post('/register',(req,res)=>{
             res.status(500).send({auth:false,token:"Email id already registerd"})
         }else{
             User.create({
+                user_id:Math.floor(Math.random() * 100),
                 user_name:req.body.user_name,
                 email:req.body.email,
                 password:hashpassWord,
@@ -56,7 +57,7 @@ router.post('/login',(req,res) => {
             if(!passIsValid) return res.status(500).send({auth:false,token:'Invalid Password'})
             // in case password is valid
             var token = jwt.sign({id:user._id}, config.secret, {expiresIn:86400}) //24 hr
-            res.send({auth:true,token:token})
+            res.send({auth:true,token:token, userData: user})
         }
     })
 })
